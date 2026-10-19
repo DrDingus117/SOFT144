@@ -1,4 +1,4 @@
-//The other Repo didn't see this file and It's directory so I had to put it in a seperate directory to publish it.
+//VS Code acted as this was a different Repo. Had to change directories so I could upload both onto the same Repo.
 
 class HashTable {
   constructor(size = 8, { logCollisions = true } = {}) {
