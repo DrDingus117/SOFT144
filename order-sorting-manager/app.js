@@ -56,21 +56,69 @@ const orders = [
 ];
 
 function bubbleSortByTotal(arr) {
-    let n = arr.length;
+    // Create a shallow copy of the array to avoid mutating the original
+    let sortedArray = [...arr];
+    let n = sortedArray.length;
+    let comparisons = 0;
+    let swaps = 0;
     let swapped;
     
     for (let i = 0; i < n - 1; i++) {
         swapped = false;
         for (let j = 0; j < n - 1 - i; j++) {
-            if (arr[j].total > arr[j + 1].total) {
-                let temp = arr[j];
-                arr[j] = arr[j + 1];
-                arr[j + 1] = temp;
+            comparisons++; // Increment comparison count
+            
+            if (sortedArray[j].total > sortedArray[j + 1].total) {
+                // Swap the adjacent order objects
+                let temp = sortedArray[j];
+                sortedArray[j] = sortedArray[j + 1];
+                sortedArray[j + 1] = temp;
+                
+                swaps++; // Increment swap count
                 swapped = true;
             }
         }
+        // Early exit if a complete pass happens with zero swaps
         if (!swapped) break;
     }
-    return arr;
+    
+    return {
+        sortedArray: sortedArray,
+        comparisons: comparisons,
+        swaps: swaps
+    };
+}
+function bubbleSortByTotal(arr) {
+    let sortedArray = [...arr];
+    let n = sortedArray.length;
+    let comparisons = 0;
+    let swaps = 0;
+    let swapped;
+    
+    for (let i = 0; i < n - 1; i++) {
+        swapped = false;
+        for (let j = 0; j < n - 1 - i; j++) {
+            comparisons++;
+            
+            if (sortedArray[j].total > sortedArray[j + 1].total) {
+                let temp = sortedArray[j];
+                sortedArray[j] = sortedArray[j + 1];
+                sortedArray[j + 1] = temp;
+                
+                swaps++;
+                swapped = true;
+            }
+        }
+        // Early-stop check: if no swaps occurred during this entire pass, stop early
+        if (!swapped) {
+            break;
+        }
+    }
+    
+    return {
+        sortedArray: sortedArray,
+        comparisons: comparisons,
+        swaps: swaps
+    };
 }
 
