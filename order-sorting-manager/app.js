@@ -157,13 +157,85 @@ function selectionSortByTotal(arr) {
     };
 }
 
+function insertionSortByTotal(arr) {
+    // Create a shallow copy of the array to avoid mutating the original
+    let sortedArray = [...arr];
+    let n = sortedArray.length;
+    let comparisons = 0;
+    let moves = 0;
 
-console.log(
-    order.orderNumber,
-    order.customer,
-    order.total
-);
+    for (let i = 1; i < n; i++) {
+        let currentOrder = sortedArray[i];
+        let j = i - 1;
 
+        // An insertion sort comparison happens every time we check the loop condition
+        while (j >= 0) {
+            comparisons++; // Increment comparison count
+            
+            if (sortedArray[j].total > currentOrder.total) {
+                // Shift the element to the right
+                sortedArray[j + 1] = sortedArray[j];
+                moves++; // An order changed position in the array
+                j--;
+            } else {
+                // Found the correct spot; break the loop
+                break;
+            }
+        }
+
+        // Place the current order into its final position for this pass
+        // If it moves to a new index, count it as a move
+        if (j + 1 !== i) {
+            sortedArray[j + 1] = currentOrder;
+            moves++;
+        }
+    }
+
+    return {
+        sortedArray: sortedArray,
+        comparisons: comparisons,
+        moves: moves
+    };
+}
+
+// --- Run the Sorting Algorithms ---
+const bubbleResult = bubbleSortByTotal(orders);
+const selectionResult = selectionSortByTotal(orders);
+const insertionResult = insertionSortByTotal(orders);
+
+
+// --- Display Bubble Sort Results ---
 console.log("Bubble Sort Results:");
+bubbleResult.sortedArray.forEach(order => {
+    console.log(
+        order.orderNumber,
+        order.customer,
+        order.total
+    );
+});
+console.log(`Metrics -> Comparisons: ${bubbleResult.comparisons}, Swaps: ${bubbleResult.swaps}\n`);
+
+
+// --- Display Selection Sort Results ---
 console.log("Selection Sort Results:");
+selectionResult.sortedArray.forEach(order => {
+    console.log(
+        order.orderNumber,
+        order.customer,
+        order.total
+    );
+});
+console.log(`Metrics -> Comparisons: ${selectionResult.comparisons}, Swaps: ${selectionResult.swaps}\n`);
+
+
+// --- Display Insertion Sort Results ---
 console.log("Insertion Sort Results:");
+insertionResult.sortedArray.forEach(order => {
+    console.log(
+        order.orderNumber,
+        order.customer,
+        order.total
+    );
+});
+console.log(`Metrics -> Comparisons: ${insertionResult.comparisons}, Moves: ${insertionResult.moves}\n`);
+
