@@ -122,3 +122,48 @@ function bubbleSortByTotal(arr) {
     };
 }
 
+function selectionSortByTotal(arr) {
+    // Create a shallow copy of the array to avoid mutating the original
+    let sortedArray = [...arr];
+    let n = sortedArray.length;
+    let comparisons = 0;
+    let swaps = 0;
+
+    for (let i = 0; i < n - 1; i++) {
+        let minIndex = i;
+
+        for (let j = i + 1; j < n; j++) {
+            comparisons++; // Increment comparison count
+            
+            if (sortedArray[j].total < sortedArray[minIndex].total) {
+                minIndex = j;
+            }
+        }
+
+        // Swap the found minimum element with the first element of the unsorted section
+        if (minIndex !== i) {
+            let temp = sortedArray[i];
+            sortedArray[i] = sortedArray[minIndex];
+            sortedArray[minIndex] = temp;
+            
+            swaps++; // Increment swap count
+        }
+    }
+
+    return {
+        sortedArray: sortedArray,
+        comparisons: comparisons,
+        swaps: swaps
+    };
+}
+
+
+console.log(
+    order.orderNumber,
+    order.customer,
+    order.total
+);
+
+console.log("Bubble Sort Results:");
+console.log("Selection Sort Results:");
+console.log("Insertion Sort Results:");
