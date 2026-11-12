@@ -1,7 +1,6 @@
 class Graph {
    constructor() {
     this.adjacencyList = new Map();
-    console.log(this.adjacencyList);
    }
    addLocation(location) {
     if (this.adjacencyList.has(location)) {
