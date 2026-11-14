@@ -17,6 +17,45 @@ class Graph {
     this.adjacencyList.get(to).push(from);
     return true;
    }
+   hasLocation(location) {
+    return this.adjacencyList.has(location);
+   }
+   hasRoute(from, to) {
+    if (!this.adjacencyList.has(from) || !this.adjacencyList.has(to)) {
+        return false;
+    }
+    return this.adjacencyList.get(from).includes(to);
+   }
+   getConnections(location) {
+    if (!this.adjacencyList.has(location)) {
+        return [];
+    }
+    return this.adjacencyList.get(location);
+   }
+   removeRoute(from, to) {
+    if (!this.adjacencyList.has(from) || !this.adjacencyList.has(to)) {
+        return false;
+    }
+    const fromIndex = this.adjacencyList.get(from).indexOf(to);
+    const toIndex = this.adjacencyList.get(to).indexOf(from);
+    if (fromIndex === -1 || toIndex === -1) {
+        return false;
+    }
+    this.adjacencyList.get(from).splice(fromIndex, 1);
+    this.adjacencyList.get(to).splice(toIndex, 1);
+    return true;
+   }
+   removeLocation(location) {
+    if (!this.adjacencyList.has(location)) {
+        return false;
+    }
+    for (const connectedLocation of this.adjacencyList.get(location)) {
+        this.removeRoute(location, connectedLocation);
+    }
+    this.adjacencyList.delete(location);
+    return true;
+   }
+     
 
 }
 const deliveryGraph = new Graph();
