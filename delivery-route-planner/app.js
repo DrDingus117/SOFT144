@@ -249,3 +249,65 @@ console.assert(testGraph2.removeLocation("B") === true, "A location can be remov
 console.assert(testGraph2.hasLocation("B") === false, "The removed location no longer exists");
 console.assert(!testGraph2.getConnections("A").includes("B"), "Removed location is gone from A's connections");
 console.assert(!testGraph2.getConnections("C").includes("B"), "Removed location is gone from C's connections");
+
+// ---- Larger performance test ----
+const largeGraph = new Graph();
+const total = 1000;
+
+for (let i = 1; i <= total; i++) {
+    largeGraph.addLocation(`Location-${i}`);
+}
+
+// Connect each location to the next one
+for (let i = 1; i < total; i++) {
+    largeGraph.addRoad(`Location-${i}`, `Location-${i + 1}`);
+}
+
+// Extra roads to create multiple route choices
+for (let i = 1; i <= total - 10; i += 10) {
+    largeGraph.addRoad(`Location-${i}`, `Location-${i + 10}`);
+}
+
+console.time("BFS");
+largeGraph.breadthFirstSearch("Location-1");
+console.timeEnd("BFS");
+
+console.time("DFS");
+largeGraph.depthFirstSearch("Location-1");
+console.timeEnd("DFS");
+
+console.time("Find route");
+largeGraph.findRoute("Location-1", `Location-${total}`);
+console.timeEnd("Find route");
+
+/*
+EXPLANATION
+
+What does a vertex represent in the delivery system?
+A vertex is a delivery location, such as the Warehouse, Airport, or Hospital.
+
+What does an edge represent?
+An edge is a road connecting two locations. The roads are two-way, so the graph is undirected.
+
+What is an adjacency list?
+An adjacency list stores each location along with a list of the locations directly connected to it. This program uses a Map for it.
+
+What is the difference between BFS and DFS?
+BFS uses a queue and visits nearby locations before moving farther away. DFS uses a stack and follows one route as far as it can before backing up to try another.
+
+Why does a graph need to track visited locations?
+Graphs can contain loops, so without tracking, the search could keep revisiting the same locations forever. Tracking also makes sure each location is visited only once.
+
+Why is BFS useful for finding a route with the fewest roads?
+BFS explores all locations one road away, then two roads away, and so on. The first time it reaches the destination, it got there using the fewest roads.
+
+What happens when a location cannot be reached?
+The search never visits it. BFS and DFS leave it out of their results, and findRoute returns null.
+
+TIME COMPLEXITY
+- Adding a location to a Map is usually O(1).
+- Checking whether a location exists is usually O(1).
+- BFS is O(V + E), where V is the number of vertices and E is the number of edges.
+- DFS is O(V + E).
+- Removing a road or checking a connection may need to search a location's connection list, so the time depends on how many neighbors it has.
+*/
