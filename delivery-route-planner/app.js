@@ -67,6 +67,25 @@ class Graph {
   this.adjacencyList.get(locationB).push(locationA);
   return true;
 }
+   breadthFirstSearch(startLocation) {
+    if (!this.adjacencyList.has(startLocation)) {
+        return [];
+    }
+    const visited = new Set();
+    const queue = [startLocation];
+    visited.add(startLocation);
+    while (queue.length > 0) {
+        const currentLocation = queue.shift();
+        for (const connectedLocation of this.adjacencyList.get(currentLocation)) {
+            if (!visited.has(connectedLocation)) {
+                visited.add(connectedLocation);
+                queue.push(connectedLocation);
+            }
+        }
+    }
+    return [...visited];
+   }
+     
 
 
 }
@@ -89,10 +108,13 @@ deliveryGraph.addRoad("North Station", "Hospital");
 deliveryGraph.addRoad("Shopping Center", "Hospital");
 deliveryGraph.addRoad("University", "Hospital");
 
-
 for (const [location, connections] of deliveryGraph.adjacencyList) {
     console.log(`${location}: ${connections.join(", ")}`);
 }
+
+const bfsResult = deliveryGraph.breadthFirstSearch("Warehouse");
+console.log("BFS:", bfsResult);
+
 console.log("\n--- Final Summary ---");
 console.log("The delivery company used a graph to represent locations as vertices and roads as edges.");
 console.log("Number of locations:", deliveryGraph.adjacencyList.size);
