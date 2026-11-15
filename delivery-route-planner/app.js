@@ -285,6 +285,17 @@ const t3 = performance.now();
 largeGraph.findRoute("Location-1", `Location-${total}`);
 const routeTime = (performance.now() - t3).toFixed(3);
 
+console.log("\n--- Final Summary ---");
+console.log("The delivery company used a graph to represent locations as vertices and roads as edges.");
+console.log("Number of locations:", deliveryGraph.locationCount());
+console.log("Number of roads:", deliveryGraph.roadCount());
+console.log("BFS order:", bfsResult.join(", "));
+console.log("DFS order:", dfsResult.join(", "));
+console.log("Route from Warehouse to Hospital:", route.join(" -> "));
+console.log("Unreachable test: Remote Office exists but BFS, DFS and findRoute cannot reach it (route is null).");
+console.log(`Large graph (${total} locations): BFS ${bfsTime}ms, DFS ${dfsTime}ms, route ${routeTime}ms`);
+console.log("Key difference: BFS visits nearby locations first (queue), while DFS follows one route as far as it can before backing up (stack).");
+
 /*
 EXPLANATION
 
