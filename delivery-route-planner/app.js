@@ -194,3 +194,24 @@ console.log("\n--- Final Summary ---");
 console.log("The delivery company used a graph to represent locations as vertices and roads as edges.");
 console.log("Number of locations:", deliveryGraph.locationCount());
 console.log("Number of roads:", deliveryGraph.roadCount());
+
+
+
+// ---- Tests: adding and checking ----
+const testGraph = new Graph();
+
+console.assert(testGraph.addLocation("A") === true, "A location can be added");
+console.assert(testGraph.addLocation("A") === false, "A duplicate location is not added");
+testGraph.addLocation("B");
+testGraph.addLocation("C");
+
+console.assert(testGraph.addRoad("A", "B") === true, "A road can be added");
+console.assert(testGraph.hasRoad("A", "B") === true, "Road is stored from A to B");
+console.assert(testGraph.hasRoad("B", "A") === true, "Road is stored from B to A");
+console.assert(testGraph.addRoad("A", "B") === false, "A duplicate road is not added");
+console.assert(testGraph.getConnections("A").length === 1, "A has only one connection to B");
+console.assert(testGraph.addRoad("A", "Missing") === false, "A road cannot be added when a location is missing");
+
+console.assert(testGraph.hasLocation("A") === true, "hasLocation finds an existing location");
+console.assert(testGraph.hasLocation("Missing") === false, "hasLocation returns false for a missing location");
+console.assert(testGraph.hasRoad("A", "C") === false, "hasRoad returns false when there is no road");
