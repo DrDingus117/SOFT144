@@ -82,10 +82,17 @@ deliveryGraph.addLocation("Hospital");
 //From Warehouse
 deliveryGraph.addRoad("Warehouse", "Downtown");
 deliveryGraph.addRoad("Warehouse", "Airport");
-deliveryGraph.addRoad("Warehouse", "Hospital");
-deliveryGraph.addRoad("Warehouse", "North Station");
-deliveryGraph.addRoad("Warehouse", "Shopping Center");
-deliveryGraph.addRoad("Warehouse", "University");
+deliveryGraph.addRoad("Downtown", "Shopping Center");
+deliveryGraph.addRoad("Downtown", "University");
+deliveryGraph.addRoad("Airport", "North Station");
+deliveryGraph.addRoad("North Station", "Hospital");
+deliveryGraph.addRoad("Shopping Center", "Hospital");
+deliveryGraph.addRoad("University", "Hospital");
 
 
-console.log(deliveryGraph);
+for (const [location, connections] of deliveryGraph.adjacencyList) {
+    console.log(`${location}: ${connections.join(", ")}`);
+}
+console.log("\n--- Final Summary ---");
+console.log("The delivery company used a graph to represent locations as vertices and roads as edges.");
+console.log("Number of locations:", deliveryGraph.adjacencyList.size);
