@@ -215,3 +215,37 @@ console.assert(testGraph.addRoad("A", "Missing") === false, "A road cannot be ad
 console.assert(testGraph.hasLocation("A") === true, "hasLocation finds an existing location");
 console.assert(testGraph.hasLocation("Missing") === false, "hasLocation returns false for a missing location");
 console.assert(testGraph.hasRoad("A", "C") === false, "hasRoad returns false when there is no road");
+
+// ---- Tests: searching, routes, and removing ----
+const testGraph2 = new Graph();
+["A", "B", "C", "D", "E"].forEach(name => testGraph2.addLocation(name));
+testGraph2.addRoad("A", "B");
+testGraph2.addRoad("B", "C");
+testGraph2.addRoad("A", "C");
+// D is connected to E, but neither connects to A, B or C
+testGraph2.addRoad("D", "E");
+
+const bfsTest = testGraph2.breadthFirstSearch("A");
+const dfsTest = testGraph2.depthFirstSearch("A");
+
+console.assert(bfsTest.length === 3, "BFS visits all reachable locations");
+console.assert(dfsTest.length === 3, "DFS visits all reachable locations");
+console.assert(new Set(bfsTest).size === bfsTest.length, "BFS has no repeated locations");
+console.assert(new Set(dfsTest).size === dfsTest.length, "DFS has no repeated locations");
+
+const testRoute = testGraph2.findRoute("A", "C");
+console.assert(
+    testRoute !== null && testRoute[0] === "A" && testRoute[testRoute.length - 1] === "C",
+    "findRoute returns a valid route"
+);
+console.assert(testGraph2.findRoute("A", "D") === null, "A missing route returns null");
+
+console.assert(testGraph2.removeRoad("A", "C") === true, "A road can be removed");
+console.assert(testGraph2.hasRoad("A", "C") === false, "Road is removed from A to C");
+console.assert(testGraph2.hasRoad("C", "A") === false, "Road is removed from C to A");
+console.assert(testGraph2.removeRoad("A", "C") === false, "Removing a missing road returns false");
+
+console.assert(testGraph2.removeLocation("B") === true, "A location can be removed");
+console.assert(testGraph2.hasLocation("B") === false, "The removed location no longer exists");
+console.assert(!testGraph2.getConnections("A").includes("B"), "Removed location is gone from A's connections");
+console.assert(!testGraph2.getConnections("C").includes("B"), "Removed location is gone from C's connections");
