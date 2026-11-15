@@ -85,10 +85,33 @@ class Graph {
     }
     return [...visited];
    }
-     
+   depthFirstSearch(startLocation) {
+       if (!this.adjacencyList.has(startLocation)) {
+        return [];
+       }
+       const visited = new Set();
+       const stack = [startLocation];
+       const order = [];
 
+       while (stack.length > 0) {
+        const currentLocation =stack.pop();
+        if (visited.has(currentLocation)) {
+          continue;
+        }
+        visited.add(currentLocation);
+        order.push(currentLocation);
+        
+        const connections = this.adjacencyList.get(currentLocation);
+        for (let i = connections.length - 1; i >= 0; i--) {
+           if (!visited.has(connections[i])) {
+            stack.push(connections[i]);
+           }
+        }
 
-}
+       }
+       return order;
+    }
+   }
 const deliveryGraph = new Graph();
 //Locations
 deliveryGraph.addLocation("Warehouse");
@@ -114,6 +137,8 @@ for (const [location, connections] of deliveryGraph.adjacencyList) {
 
 const bfsResult = deliveryGraph.breadthFirstSearch("Warehouse");
 console.log("BFS:", bfsResult);
+const dfsResult = deliveryGraph.depthFirstSearch("Warehouse");
+console.log("DFS:", dfsResult);
 
 console.log("\n--- Final Summary ---");
 console.log("The delivery company used a graph to represent locations as vertices and roads as edges.");
