@@ -110,8 +110,40 @@ class Graph {
 
        }
        return order;
+    
     }
+         findRoute(startLocation, destination) {
+    if (!this.adjacencyList.has(startLocation) || !this.adjacencyList.has(destination)) {
+        return null;
+    }
+    const visited = new Set([startLocation]);
+    const queue = [startLocation];
+    const previous = new Map();
+
+    while (queue.length > 0) {
+        const currentLocation = queue.shift();
+
+        if (currentLocation === destination) {
+            const route = [];
+            let step = destination;
+            while (step !== undefined) {
+                route.unshift(step);
+                step = previous.get(step);
+            }
+            return route;
+        }
+
+        for (const connectedLocation of this.adjacencyList.get(currentLocation)) {
+            if (!visited.has(connectedLocation)) {
+                visited.add(connectedLocation);
+                previous.set(connectedLocation, currentLocation);
+                queue.push(connectedLocation);
+            }
+        }
+    }
+    return null;
    }
+      }
 const deliveryGraph = new Graph();
 //Locations
 deliveryGraph.addLocation("Warehouse");
@@ -139,6 +171,8 @@ const bfsResult = deliveryGraph.breadthFirstSearch("Warehouse");
 console.log("BFS:", bfsResult);
 const dfsResult = deliveryGraph.depthFirstSearch("Warehouse");
 console.log("DFS:", dfsResult);
+const route = deliveryGraph.findRoute("Warehouse", "Hospital");
+console.log("Delivery route:", route.join(" -> "));
 
 console.log("\n--- Final Summary ---");
 console.log("The delivery company used a graph to represent locations as vertices and roads as edges.");
