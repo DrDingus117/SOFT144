@@ -190,13 +190,6 @@ console.log("BFS reaches Remote Office:", deliveryGraph.breadthFirstSearch("Ware
 console.log("DFS reaches Remote Office:", deliveryGraph.depthFirstSearch("Warehouse").includes("Remote Office"));
 console.log("Route to Remote Office:", deliveryGraph.findRoute("Warehouse", "Remote Office"));
 
-console.log("\n--- Final Summary ---");
-console.log("The delivery company used a graph to represent locations as vertices and roads as edges.");
-console.log("Number of locations:", deliveryGraph.locationCount());
-console.log("Number of roads:", deliveryGraph.roadCount());
-
-
-
 // ---- Tests: adding and checking ----
 const testGraph = new Graph();
 
@@ -279,6 +272,18 @@ console.timeEnd("DFS");
 console.time("Find route");
 largeGraph.findRoute("Location-1", `Location-${total}`);
 console.timeEnd("Find route");
+
+const t1 = performance.now();
+largeGraph.breadthFirstSearch("Location-1");
+const bfsTime = (performance.now() - t1).toFixed(3);
+
+const t2 = performance.now();
+largeGraph.depthFirstSearch("Location-1");
+const dfsTime = (performance.now() - t2).toFixed(3);
+
+const t3 = performance.now();
+largeGraph.findRoute("Location-1", `Location-${total}`);
+const routeTime = (performance.now() - t3).toFixed(3);
 
 /*
 EXPLANATION
