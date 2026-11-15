@@ -143,7 +143,17 @@ class Graph {
     }
     return null;
    }
-      }
+       locationCount() {
+    return this.adjacencyList.size;
+   }
+   roadCount() {
+    let total = 0;
+    for (const connections of this.adjacencyList.values()) {
+        total += connections.length;
+    }
+    return total / 2;
+   }
+}
 const deliveryGraph = new Graph();
 //Locations
 deliveryGraph.addLocation("Warehouse");
@@ -173,7 +183,14 @@ const dfsResult = deliveryGraph.depthFirstSearch("Warehouse");
 console.log("DFS:", dfsResult);
 const route = deliveryGraph.findRoute("Warehouse", "Hospital");
 console.log("Delivery route:", route.join(" -> "));
+deliveryGraph.addLocation("Remote Office");
+
+console.log("Remote Office exists:", deliveryGraph.hasLocation("Remote Office"));
+console.log("BFS reaches Remote Office:", deliveryGraph.breadthFirstSearch("Warehouse").includes("Remote Office"));
+console.log("DFS reaches Remote Office:", deliveryGraph.depthFirstSearch("Warehouse").includes("Remote Office"));
+console.log("Route to Remote Office:", deliveryGraph.findRoute("Warehouse", "Remote Office"));
 
 console.log("\n--- Final Summary ---");
 console.log("The delivery company used a graph to represent locations as vertices and roads as edges.");
-console.log("Number of locations:", deliveryGraph.adjacencyList.size);
+console.log("Number of locations:", deliveryGraph.locationCount());
+console.log("Number of roads:", deliveryGraph.roadCount());
